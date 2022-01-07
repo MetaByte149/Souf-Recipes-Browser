@@ -6,8 +6,15 @@ class RecipeProvider {
 
   RecipeProvider(this._instance);
 
-  Future<List<Recipe>> getAllRecipes(String userId) async {
-    final maps = await _instance.getAllRecipes(userId);
-    return maps.map((e) => Recipe.fromMap(e)).toList();
+  Future<List<Recipe>> getAllRecipesFromUser(String userId) async {
+    final rawData = await _instance.getAllRecipesFromUser(userId);
+    return rawData.map((e) => Recipe.fromMap(e)).toList();
+  }
+
+  Stream<List<Recipe>> listRecipesOfUser(String userId) {
+    final rawStream = _instance.listRecipesOfUser(userId);
+
+    return rawStream
+        .map((event) => event.map((event) => Recipe.fromMap(event)).toList());
   }
 }
